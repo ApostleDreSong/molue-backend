@@ -1,0 +1,17 @@
+{
+    "name": "molue-backend-docker",
+    "version": "1.0.0",
+    "description": "Docker Compose for Molue collections in Africa",
+    "author": "Damilare ADEMESO",
+    "license": "MIT",
+    "scripts": {
+        "docker:dev": "docker compose --env-file .env.dev -f docker-compose.dev.yml up -d --build",
+        "docker:debug": "docker compose --env-file .env.debug -f docker-compose.debug.yml up -d --build"
+    },
+    "dependencies": {
+        "tsconfig-paths": "^4.1.2"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.2"
+    }
+}

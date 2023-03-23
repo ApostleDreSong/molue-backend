@@ -1,0 +1,27 @@
+version: '3.0'
+services:
+  app:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+      target: base
+    ports:
+      - 4000:4000
+    volumes:
+      - ./src:${src_location}
+      - ./nodemon.json:${nodemon_config_location}
+    expose:
+      - '4000'
+  nginx:
+    image         : nginx:stable
+    container_name: Nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+      target: base
+    links         :
+      - node
+    ports:
+      - "80:80"
+      - "443:443"

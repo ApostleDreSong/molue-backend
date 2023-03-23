@@ -1,0 +1,38 @@
+version: '3.0'
+services:
+  backend:
+    container_name: backend
+    environment:
+      backend_port : ${backend_port}
+      src_location : ${src_location}
+      nodemon_config_location : ${nodemon_config_location}
+    build:
+      args:
+        - backend_port = ${backend_port}
+      context: ./node
+      dockerfile: Dockerfile.node.debug
+      # target: base
+    ports:
+      - ${backend_port}:${backend_port}
+      - ${backend_debug_port}:${backend_debug_port}
+    volumes:
+      - ${src_location}:/src
+      - ${nodemon_config_location}:/nodemon.json
+  nginx:
+    # image         : nginx:stable
+    container_name: nginx
+    environment:
+      nginx_http : ${nginx_http}
+      nginx_https : ${nginx_https}
+      backend_port : ${backend_port}
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.nginx
+      # target: base
+    ports:
+      - ${nginx_http}:${nginx_http}
+      - ${nginx_https}:${nginx_https}
+    depends_on:
+      - backend
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates

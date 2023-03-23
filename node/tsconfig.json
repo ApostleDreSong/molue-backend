@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "lib": [
+      "es6"
+    ],
+    "module": "nodenext",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "typeRoots": ["./src/@types", "./node_modules/@types"],
+    "baseUrl": "./src",
+    "paths": {
+      "@interfaces/*": ["interfaces/*"],
+      "@controllers/*": ["controllers/*"],
+      "@routes/*": ["routes/*"],
+      "@models/*": ["models/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@helpers/*": ["controllers/helpers/*"],
+    }
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "ts-node": {
+    // Tell ts-node CLI to install the --loader automatically
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+    "require": ["tsconfig-paths/register"]
+}
+}

@@ -1,0 +1,16 @@
+FROM node:latest
+WORKDIR /
+# ARG CACHEBUST
+# RUN echo ${CACHEBUST}
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+RUN npm install -g nodemon
+ARG backend_port
+ENV backend_port=${backend_port}
+ARG mongoUri
+ENV mongoUri=${mongoUri}
+ARG jwt_secret
+ENV jwt_secret=${jwt_secret}
+CMD ["npm", "run", "start:dev"]
