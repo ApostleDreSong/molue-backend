@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { signUp, signIn } from "@controllers/users/users";
-import authenticate from "@middlewares/authenticate";
+import { signUp, signIn } from "@controllers/users";
 
 const userRouter = Router();
 
@@ -19,17 +18,6 @@ userRouter.post('/login', async (req, res, next) => {
     try {
         const token = await signIn({ email, password })
         res.status(200).json({ token })
-    } catch (error) {
-        next(error)
-    }
-})
-
-userRouter.use(authenticate)
-
-userRouter.post('/logout', async (req, res, next) => {
-    try {
-        // const token = await signIn({ email, password })
-        // res.status(200).json({ token })
     } catch (error) {
         next(error)
     }

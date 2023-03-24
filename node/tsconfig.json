@@ -23,6 +23,7 @@
       "@routes/*": ["routes/*"],
       "@models/*": ["models/*"],
       "@middlewares/*": ["middlewares/*"],
+      "@services/*": ["services/*"],
       "@helpers/*": ["controllers/helpers/*"],
     }
   },

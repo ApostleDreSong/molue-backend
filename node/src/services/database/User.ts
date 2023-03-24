@@ -1,9 +1,7 @@
 import mongoose, { Model, Schema } from "mongoose";
-import { IUser, IUserMethods, IUserNoPassword } from "@types";
+import { IUpdateUserData, IUser, IUserCreateData, IUserModelType, IUserNoPassword } from "@types";
 
-type UserModelType = Model<IUser, {}, IUserMethods>;
-
-const userSchema = new Schema<IUser, UserModelType, IUserMethods>({
+const userSchema = new Schema<IUser, IUserModelType>({
     firstName: {
         type: String,
         required: true,
@@ -23,34 +21,38 @@ const userSchema = new Schema<IUser, UserModelType, IUserMethods>({
     },
 });
 
-userSchema.methods = {
-    createUser: async function createUser(userDetails: IUser[]): Promise<any[]> {
-        try {
-            const res = await mongoose.model('User').create(userDetails);
-            return res
-        } catch (error) {
-            throw error
-        }
+userSchema.statics = {
+    createUser: async function createUser(userDetails: IUserCreateData[]): Promise<IUser[]> {
+        const res = await this.create(userDetails);
+        return res
     },
-    returnUserPassword: async function returnUserDetails(email: string): Promise<string> {
-        try {
-            const res = await mongoose.model('User').findOne({ email }, "password -_id");
+    getUser: async function getUser(id: string): Promise<IUser | null> {
+        const user = await this.findById(id);
+        return user ? user.toObject() : null;
+    },
+    updateRoute: async function updateRoute(id: string, userDetails: IUpdateUserData): Promise<IUser | null> {
+        const user = await this.findById(id);
+        if (!user) {
+            return null;
+        }
+        const updatedUser = { ...user, ...userDetails }
+        await updatedUser.save();
+        return updatedUser;
+    },
+    returnUserPassword: async function returnUserDetails(email: string): Promise<string | null> {
+        const res = await this.findOne({ email }, "password -_id");
+        if (res) {
             const { password } = res;
             return password
-        } catch (error) {
-            throw error
         }
+        return null
     },
     returnUserDetails: async function returnUserDetails(email: string): Promise<IUserNoPassword> {
-        try {
-            return await mongoose.model('User').findOne({ email }, "-password").lean();
-        } catch (error) {
-            throw error
-        }
+        return await this.findOne({ email }, "-password").lean();
     }
 }
 
-const UserModel = mongoose.model<IUser, UserModelType>('User', userSchema);
+const UserModel = mongoose.model<IUser, IUserModelType>('User', userSchema);
 
 UserModel.syncIndexes();
 

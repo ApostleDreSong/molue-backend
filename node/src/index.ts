@@ -1,7 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 import connectDB from "@interfaces/database/connection";
+
 // load all routers
 import userRouter from "@routes/userRouter";
+import vehicleRouter from "@routes/vehicleRouter";
+import routeRouter from "@routes/routeRouter";
+import locationRouter from "@routes/locationRouter";
+import tripRouter from "@routes/tripRouter";
 
 import { IError } from "@types";
 import { errorHandler } from "@controllers/helpers/errorHandler";
@@ -21,13 +26,17 @@ app.get("/", (req, res) => {
 });
 
 app.use('/user', userRouter)
+app.use('/vehicle', vehicleRouter)
+app.use('/route', routeRouter)
+app.use('/location', locationRouter)
+app.use('/trip', tripRouter)
 
 // manage authentication and session here
 
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
     const errorResponse = errorHandler(err);
     const { statusCode, errorMessage } = errorResponse
-    console.log('err', err);
+    console.log('error', err);
     return res.status(statusCode ?? 500).send(errorMessage ?? 'Something Broke!')
 })
 

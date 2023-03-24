@@ -1,32 +1,19 @@
 import UserModel from "services/database/User";
-import { IUserEmail, IUser, IUserNoPassword } from "@types";
-const user = new UserModel()
+import { IUserEmail, IUserCreateData, IUserNoPassword } from "@types";
 
-const CreateUser = async ({ firstName, lastName, email, password }: IUser): Promise<string> => {
-    try {
-        await user.createUser([{firstName, lastName, email, password}])
-        return "User created successfully"
-    } catch (error) {
-        throw (error)
-    }
+const CreateUser = async ({ firstName, lastName, email, password }: IUserCreateData): Promise<string> => {
+    await UserModel.createUser([{ firstName, lastName, email, password }])
+    return "User created successfully"
 }
 
-const FindUsersPassword = async ({ email }: IUserEmail): Promise<string> => {
-    try {
-        const result = await user.returnUserPassword(email)
-        return result
-    } catch (error) {
-        throw (error)
-    }
+const FindUsersPassword = async ({ email }: IUserEmail): Promise<string | null> => {
+    const result = await UserModel.returnUserPassword(email)
+    return result
 }
 
 const GetUserDetails = async ({ email }: IUserEmail): Promise<IUserNoPassword> => {
-    try {
-        const result = await user.returnUserDetails(email)
-        return result
-    } catch (error) {
-        throw (error)
-    }
+    const result = await UserModel.returnUserDetails(email)
+    return result
 }
 
 export { CreateUser, FindUsersPassword, GetUserDetails }
