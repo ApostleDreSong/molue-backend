@@ -8,15 +8,11 @@ export interface IUser {
 }
 
 export interface ISignData {
-    userDetails: {
-        firstName: string;
-        lastName: string;
-        email: string;
-    },
+    data: string | object | Buffer,
     jwtOptions: SignOptions | undefined
 }
 
-export interface IFindPassword {
+export interface IUserEmail {
     email: string;
 }
 
@@ -39,7 +35,16 @@ export interface IError {
     errorMessage: string
 }
 
+export interface IUserNoPassword {
+    userDetails: {
+        firstName: string;
+        lastName: string;
+        email: string;
+    }
+}
+
 export interface IUserMethods {
-    returnUserDetails(email: string): Promise<any>,
-    returnUserPassword(email: string): Promise<any>
+    createUser(userDetails: IUser[]): Promise<any[]>,
+    returnUserDetails(email: string): Promise<IUserNoPassword>,
+    returnUserPassword(email: string): Promise<string>
 }

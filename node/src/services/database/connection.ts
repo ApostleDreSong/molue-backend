@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 // connect to db
 
-const connectDB = async () => {
+const connectToDbInstance = async () => {
     try {
         if (process.env.mongoUri) {
             const conn = await mongoose.connect(process.env.mongoUri)
-            console.log(`MongoDB Connected: ${conn.connection.host}`)
         } else {
             throw 'no mongo connection uri'
         }
@@ -15,4 +14,4 @@ const connectDB = async () => {
     }
 }
 
-export default connectDB
+export default connectToDbInstance

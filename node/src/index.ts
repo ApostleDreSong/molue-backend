@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import connectDB from "@models/connection";
+import connectDB from "@interfaces/database/connection";
 // load all routers
 import userRouter from "@routes/userRouter";
 

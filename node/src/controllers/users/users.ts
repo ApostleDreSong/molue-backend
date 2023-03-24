@@ -1,5 +1,5 @@
 import { compareData, hashData, jwtSign } from "@controllers/helpers";
-import { CreateUser, FindUsersPassword, GetUserDetails } from "@interfaces/database/database";
+import { CreateUser, FindUsersPassword, GetUserDetails } from "@interfaces/database/user";
 import { ISignIn, IUser } from "@types";
 import { SignOptions } from "jsonwebtoken";
 
@@ -26,7 +26,7 @@ const signIn = async ({ email, password }: ISignIn) => {
             if (passwordIsCorrect) {
                 const userDetails = await GetUserDetails({ email })
                 const jwtOptions: SignOptions = { algorithm: 'RS256', expiresIn: 300 };
-                const token = jwtSign({ userDetails, jwtOptions })
+                const token = jwtSign({ data: userDetails, jwtOptions })
                 return token
             }
         }

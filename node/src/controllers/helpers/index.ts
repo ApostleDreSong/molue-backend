@@ -18,10 +18,10 @@ const compareData = async ({ password, hash }: IHashCompareData) => {
     return false
 }
 
-const jwtSign = ({ userDetails, jwtOptions }: ISignData) => {
+const jwtSign = ({ data, jwtOptions }: ISignData) => {
     try {
         if (process.env.jwt_secret) {
-            return jwt.sign(userDetails, process.env.jwt_secret, jwtOptions);
+            return jwt.sign(data, process.env.jwt_secret, jwtOptions);
         } else {
             return null
         }
